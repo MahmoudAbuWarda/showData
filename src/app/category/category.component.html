@@ -1,0 +1,121 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteselectedCategory()" [disabled]="!selectedCategory || !selectedCategory.length"></button>
+        </ng-template>
+
+       
+    </p-toolbar>
+
+    <p-table #dt [value]="categorys" [rows]="10" [paginator]="true" [globalFilterFields]="['category','slug','products','created_at','updated_at']" responsiveLayout="scroll"
+        [(selection)]="selectedCategory" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Manage Categories</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal(getEventValue($event), 'contains')" placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th></th>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="category">Category <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="slug ">Slug <p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="created_at">Create Time <p-sortIcon field="created_at"></p-sortIcon></th>
+                <th pSortableColumn="updated_at">Updated Time <p-sortIcon field="updated_at"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category>
+            <tr>
+                <td (click)="expandTable(category.id)">
+                    <i class="pi pi-angle-right" *ngIf="!isExpanded &&  category.id!=catgeoryID"></i>
+                    <i class="pi pi-angle-up" *ngIf="isExpanded && category.id==catgeoryID"></i>
+                </td>
+                <td>
+                    <p-tableCheckbox [value]="category"></p-tableCheckbox>
+                </td>
+                <td>{{category.category}}</td>
+                <td>{{category.slug}}</td>
+                
+                <td>{{category.created_at}}</td>
+                <td>{{category.updated_at}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCategory(category)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteCategory(category)"></button>
+                </td>
+            </tr>
+                       <ng-container *ngIf="isExpanded && category.id==catgeoryID"   >
+                         <tr style="border:2px solid">
+                            <th style="width: 3rem">
+                               
+                            </th>
+                            <th pSortableColumn="name">Name </th>
+                            <th pSortableColumn="price">Price </th>
+                            <th pSortableColumn="description">Description </th>
+                            <th pSortableColumn="created_at">Create Time </th>
+                            <th pSortableColumn="updated_at">Updated Time </th>
+                       
+                       
+                        </tr>
+                        
+                                <tr  *ngFor="let product of category.products" style="border:2px solid">
+                            
+                            <td></td>
+                            <td>{{product.name}}</td>
+                            <td>{{product.price | currency:'USD'}}</td>
+                            <td>{{product.description}}</td>
+                            <td>{{product.created_at}}</td>
+                            <td>{{product.updated_at}}</td>
+                        </tr>
+                            
+                        
+                    </ng-container>
+              
+
+              
+            
+
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{categorys ? categorys.length : 0 }} products.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="categoryDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" styleClass="p-fluid">
+   <ng-template pTemplate="content" >
+        
+        <div class="field">
+            <label for="name">Category</label>
+            <input type="text" pInputText id="name" [(ngModel)]="category.category" required autofocus />
+            <small class="p-error" *ngIf="submitted && !category.category">Category is required.</small>
+        </div>
+        <div class="field">
+            <label for="slug">Slug</label>
+            <input type="text" pInputText id="slug" [(ngModel)]="category.slug" required autofocus />
+            <small class="p-error" *ngIf="submitted && !category.slug">Slug is required.</small>
+        </div>
+
+
+ 
+    </ng-template> 
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCategory()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

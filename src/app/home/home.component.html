@@ -1,0 +1,6 @@
+
+<p-sidebar [(visible)]="display" [transitionOptions]="'500ms'">
+    <app-nav></app-nav>
+</p-sidebar>
+<p-button type="text" (click)="display = true" icon="pi pi-chevron-left" label="Links"></p-button>
+<router-outlet></router-outlet>
