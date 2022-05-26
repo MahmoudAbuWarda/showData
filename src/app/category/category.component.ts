@@ -114,7 +114,7 @@ export class CategoryComponent implements OnInit {
         if (this.category.id) {
          
           
-           this.connectionService.updateCategory(this.category).subscribe()
+          // this.connectionService.updateCategory(this.category).subscribe()
             this.categorys[this.findIndexById(`${this.category.id}`)] = this.category;
             
             
@@ -140,24 +140,8 @@ export class CategoryComponent implements OnInit {
         this.category = {category:''};
     }
   }
-  // updateCategory(category:ICategory){
-  //   this.submitted = true;
 
-  //       if (this.category.category.trim()&&this.category.slug) {
-           
-             
-              
-  //              category = this.category;
 
-  //               this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
-            
-           
-
-  //           this.categorys = [...this.categorys];
-  //           this.categoryDialog = false;
-  //           this.category = {category:''};
-  //       }
-  // }
 
   findIndexById(id: string): number {
     let index = -1;

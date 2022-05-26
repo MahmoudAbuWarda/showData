@@ -102,7 +102,6 @@ export class ProductComponent implements OnInit {
       accept: () => {
         this.connectionService.deleteProduct(product.id).subscribe()
           this.products = this.products.filter(val => val.id !== product.id);
-         // this.product = {};
           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
       }
   });
@@ -121,7 +120,7 @@ export class ProductComponent implements OnInit {
 
         if (this.product.id) {
          
-            this.connectionService.updateProduct(this.product).subscribe()
+           // this.connectionService.updateProduct(this.product).subscribe()
            
             this.products[this.findIndexById(this.product.id)] = this.product;
 
